@@ -27,6 +27,8 @@ public class Main
        s.b.x=5.0;
        s.b.y=9.0;
 
+        System.out.println(s);
+        System.out.println(s.toSvgs());
         System.out.println(s.length());
 
         // Inicjalizowanie tablicy segmentów

@@ -5,6 +5,19 @@ public class Segment
     public Point a,b;
 
 
+    public String toString()
+    {
+        return "("+a.x+";"+a.y+") ("+b.x+";"+b.y+")";
+    }
+
+    public String toSvgs()
+    {
+
+        return "<circle r=\"5\" cx=\"" + a.x + "\" cy=\"" + a.y + "\" r=\"2\" fill=\"red\" />" +
+                "<circle r=\"5\"cx=\"" + b.x + "\" cy=\"" + b.y + "\" r=\"2\" fill=\"blue\" />";
+    }
+
+
     public double length()
     {
 
