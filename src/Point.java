@@ -1,10 +1,43 @@
 public class Point
 {
 
-    public double x;
-    public double y;
+    private double x;
+    private double y;
 
-   @Override
+    // Konstruktor ustawiający punkt w zadanym położeniu
+    public Point()
+    {
+        this.x=x;
+        this.y=y;
+    }
+
+    // Domyślny konstruktor ustawiający punkt na (0,0)
+   /* public Point()
+    {
+        this.x=0;
+        this.y=0;
+    }*/
+    //Getter x
+    public double getX()
+    {
+        return this.x;
+    }
+    //Getter y
+    public double getY() {
+        return this.y;
+    }
+    //Setter x
+    public void setX(double x)
+    {
+        this.x=x;
+    }
+    //Setter y
+    public void setY(double y)
+    {
+        this.y = y;
+    }
+
+    @Override
     public String toString()
     {
           return "("+x+";"+y+")";

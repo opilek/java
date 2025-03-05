@@ -2,7 +2,8 @@ import static java.lang.Math.pow;
 public class Segment
 {
 
-    public Point a,b;
+    public Point a;
+    public Point b;
 
 
     public String toString()
