@@ -5,18 +5,18 @@ public class Point
     private double y;
 
     // Konstruktor ustawiający punkt w zadanym położeniu
-    public Point()
+    public Point(double x, double y)
     {
         this.x=x;
         this.y=y;
     }
 
     // Domyślny konstruktor ustawiający punkt na (0,0)
-    /*public Point()
+    public Point()
     {
-        this.x=0;
-        this.y=0;
-    }*/
+        x=0;
+        y=0;
+    }
 
 
     //Konstruktor kopiujący
