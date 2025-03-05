@@ -2,27 +2,31 @@ import static java.lang.Math.pow;
 public class Segment
 {
 
-    public Point a;
-    public Point b;
+    private final Point a;
+    private final Point b;
 
+
+    public Segment(Point a, Point b)
+    {
+        this.a=new Point(a);
+        this.b=new Point(b);
+    }
+
+
+@Override
 
     public String toString()
     {
-        return "("+a.x+";"+a.y+") ("+b.x+";"+b.y+")";
-    }
-
-    public String toSvgs()
-    {
-
-        return "<circle r=\"5\" cx=\"" + a.x + "\" cy=\"" + a.y + "\" r=\"2\" fill=\"red\" />" +
-                "<circle r=\"5\"cx=\"" + b.x + "\" cy=\"" + b.y + "\" r=\"2\" fill=\"blue\" />";
+        return "Segment: a="+a+" b="+b;
     }
 
 
+
+    //W tej metodzie poprzednio był x i y a teraz musimy użyć getterów bo x i y są private
     public double length()
     {
 
-        return Math.sqrt(pow(b.x-a.x,2)+pow(b.y-a.y,2));
+        return Math.sqrt(pow(b.getX()-a.getX(),2)+pow(b.getY()-a.getY(),2));
     }
 
 

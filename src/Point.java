@@ -12,11 +12,21 @@ public class Point
     }
 
     // Domyślny konstruktor ustawiający punkt na (0,0)
-   /* public Point()
+    /*public Point()
     {
         this.x=0;
         this.y=0;
     }*/
+
+
+    //Konstruktor kopiujący
+
+    public Point(Point other)
+    {
+            this.x=other.x;
+            this.y=other.y;
+    }
+
     //Getter x
     public double getX()
     {
