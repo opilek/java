@@ -12,6 +12,13 @@ public class Main
 
         System.out.println(p1);
 
+        Point p2=new Point(13.0,65);
+
+        System.out.println(p2);
+
+        Segment s1=new Segment(p1,p2);
+        System.out.println(s1);
+
 
 
     }
