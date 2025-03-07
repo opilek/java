@@ -47,7 +47,7 @@ public class Polygon {
     }
 
 
-@Override
+
     public String toSvg()
     {
           return "<polygon points=\""+ this +"\" style=\"fill:none;stroke:purple;stroke-width:3\" />";
