@@ -23,8 +23,15 @@ public class Main
         Point[] arr={p1,p2,p1};
         arr[2]=new Point(30,65);
 
+      //Wywołanie kostruktora z klasy Polygon
         Polygon poly=new Polygon(arr);
         System.out.println(poly);
+
+        //Użycie metody toSvg
+        System.out.println(poly.toSvg());
+
+
+
 
 
 

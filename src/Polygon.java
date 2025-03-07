@@ -1,9 +1,8 @@
 public class Polygon {
-    //Tablica obiektów Point
-    private final Point[] vertices; //wierzchołki
 
+    private Point[] vertices;//Wierzchołki
 
-    //Konstruktor
+   //Konstruktor
     public Polygon(Point[] vertices) {
         this.vertices = new Point[vertices.length];
 
@@ -13,22 +12,23 @@ public class Polygon {
     }
 
     @Override
-    // Metoda toString
-    public String toString() {
-        StringBuilder s = new StringBuilder();
-        for (Point p : vertices) {
+
+    public String toString()
+    {
+        StringBuilder s=new StringBuilder();
+
+        for(Point p: vertices)
+        {
             s.append(p.getX()).append(",").append(p.getY()).append(" ");
         }
 
         return s.toString().trim();
     }
 
-
     public String toSvg()
     {
-        return "<polygon points=\"" + this +"\" style=\"fill:none;stroke:red;stroke-width:3\" />";
+        return "<polygon points=\"" + this +"\" style=\"fill:none;stroke:purple;stroke-width:3\" />";
     }
-
 
 
 
