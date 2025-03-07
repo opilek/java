@@ -6,10 +6,31 @@ public class Polygon {
     public Polygon(Point[] vertices) {
         this.vertices = new Point[vertices.length];
 
-        for (int i = 0; i < vertices.length; i++) {
+        for (int i = 0; i < vertices.length; i++)
+        {
             this.vertices[i] = new Point(vertices[i]);
         }
+
+
     }
+    /* Konstruktor (płytka kopia)
+    public Polygon(Polygon other)
+    {
+        this.vertices=other.vertices;
+    }*/
+
+    //Konstruktor (głęboka kopia)
+    public Polygon(Polygon other)
+    {
+        this.vertices=new Point[other.vertices.length];
+
+        for(int i=0;i<vertices.length;i++)
+        {
+            this.vertices[i]=new Point(other.vertices[i]);
+        }
+    }
+
+
 
     @Override
 
