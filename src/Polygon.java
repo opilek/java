@@ -46,10 +46,33 @@ public class Polygon {
         return s.toString().trim();
     }
 
+
+@Override
     public String toSvg()
     {
-        return "<polygon points=\"" + this +"\" style=\"fill:none;stroke:purple;stroke-width:3\" />";
+          return "<polygon points=\""+ this +"\" style=\"fill:none;stroke:purple;stroke-width:3\" />";
     }
+
+    public BoundingBox boundingBox()
+    {
+        if(vertices.length == 0)
+        {
+            return null;
+        }
+        double minX = vertices[0].getX();
+        double maxX = vertices[0].getX();
+        double minY = vertices[0].getY();
+        double maxY = vertices[0].getY();
+        for(int i=1; i<vertices.length; i++)
+        {
+            if(vertices[i].getX() < minX) minX = vertices[i].getX();
+            if(vertices[i].getX() > maxX) maxX = vertices[i].getX();
+            if(vertices[i].getY() < minY) minY = vertices[i].getY();
+            if(vertices[i].getY() > maxY) maxY = vertices[i].getY();
+        }
+        return new BoundingBox(minX, minY, maxX-minX, maxY-minY);
+    }
+
 
 
 
