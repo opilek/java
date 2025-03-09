@@ -28,6 +28,20 @@ public class SvgScene
         index = (index + 1) % polygons.length;
     }
 
+    public String toSvg()
+    {
+        StringBuilder sb = new StringBuilder();
+        for(Polygon p: polygons)
+        {
+            if (p != null) {
+                sb.append(p.toSvg()).append("\n");
+            }
+
+
+        }
+        return sb.toString();
+    }
+
     public BoundingBox boundingBox()
     {
         double minX = Double.POSITIVE_INFINITY;
