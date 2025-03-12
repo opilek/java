@@ -1,83 +1,85 @@
 public class Point
 {
 
-    private double x;
-    private double y;
+//    Pola x i y sa teraz prywatne, więc musimy utworzyć dla nich
+//    odpowiednie metody, czyli akcesory i mutatory
 
-    // Konstruktor ustawiający punkt w zadanym położeniu
-    public Point(double x, double y)
+
+    private int x;
+    private int y;
+
+//    Akcesory czyli setery
+
+    public void setX(int x)
     {
-        this.x=x;
-        this.y=y;
+        this.x = x;
     }
 
-    // Domyślny konstruktor ustawiający punkt na (0,0)
-    public Point()
-    {
-        x=0;
-        y=0;
-    }
-
-
-    //Konstruktor kopiujący
-
-    public Point(Point other)
-    {
-            this.x=other.x;
-            this.y=other.y;
-    }
-
-    //Getter x
-    public double getX()
-    {
-        return this.x;
-    }
-    //Getter y
-    public double getY() {
-        return this.y;
-    }
-    //Setter x
-    public void setX(double x)
-    {
-        this.x=x;
-    }
-    //Setter y
-    public void setY(double y)
+    public void setY(int y)
     {
         this.y = y;
+    }
+
+//    Mutatory czyli getery
+
+    public int getX()
+    {
+        return x;
+    }
+
+    public int getY()
+    {
+        return y;
+    }
+
+//    Następnie tworzymy 2-argumentowy konstruktor, tworzący
+//    nasz punk w miejscu określonym za pomocą argumentów
+
+    public Point(int x, int y)
+
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+//    Następnie bezargumentowy tworzoący punkt w punkcie (0, 0)
+
+    public Point()
+    {
+        this.x = 0;
+        this.y = 0;
+    }
+
+//    Następnie tworzymy konstruktor kopiujący tworzący kopię GŁĘBOKĄ obiektu
+
+    public Point(Point old)
+    {
+        this.x = old.getX();
+        this.y = old.getY();
     }
 
     @Override
     public String toString()
     {
-          return "("+x+";"+y+")";
+        return "Współżedna x punktu = " + x + "\nWspółżedna y punktu = " + y;
     }
 
     public String toSvg()
     {
-        return "<circle r=\"5\" cx=\""+x+"\" cy=\""+y+"\" fill=\"black\" />";
+        return "<circle cx=\"" + this.x + "\" cy=\"" + this.y + "\" r=\"5\" fill=\"black\" />";
     }
 
-    public void translate(double dx,double dy)
+    public void translate(int dx, int dy)
     {
-        x+=dx;
-        y+=dy;
+        this.x += dx;
+        this.y += dy;
     }
 
-    public Point translated(double dx, double dy)
+    public Point translated(int dx, int dy)
     {
-
-       Point newPoint=new Point();
-        newPoint.x+=x+dx;
-        newPoint.y=y+dy;
-
-        return newPoint;
-
-
+        Point result = new Point();
+        result.x = this.x + dx;
+        result.y = this.y + dy;
+        return result;
     }
-
-
-
-
-
 }

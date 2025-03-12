@@ -1,60 +1,72 @@
-import static java.lang.Math.pow;
 public class Segment
 {
+    private Point start;
+    private Point end;
 
-    private final Point a;
-    private final Point b;
-
-
-    public Segment(Point a, Point b)
+    public void setStart(Point start)
     {
-        this.a=new Point(a);
-        this.b=new Point(b);
+        this.start = start;
     }
 
-
-@Override
-
-    public String toString()
+    public void setEnd(Point end)
     {
-        return "Segment: a="+a+" b="+b;
+        this.end = end;
     }
 
+    public Point getStart()
+    {
+        return start;
+    }
 
+    public Point getEnd()
+    {
+        return end;
+    }
 
-    //W tej metodzie poprzednio był x i y a teraz musimy użyć getterów bo x i y są private
+//    Poprzez stworzenie NOWYCH OBIEKTÓW a nie przekazywanie REFERENCJI obiekt
+//    Segment jest niewrażliwy na zmiany pynktów z których został stworzony
+
+    public Segment(Point start, Point end)
+    {
+        this.start = new Point(start);
+        this.end = new Point(end);
+    }
+
+//    Konstruktor kopiujący
+
+    public Segment(Segment old)
+    {
+        this.start = new Point(old.getStart().getX(), old.getStart().getY());
+        this.end = new Point(old.getEnd().getX(), old.getEnd().getY());
+
+    }
+
     public double length()
     {
-
-        return Math.sqrt(pow(b.getX()-a.getX(),2)+pow(b.getY()-a.getY(),2));
+        return Math.sqrt(Math.pow(this.end.getX() - this.start.getX(), 2) + Math.pow(this.end.getY() - this.start.getY(), 2));
     }
 
-
-    public static Segment maxSegment(Segment[] arr)
+    @Override
+    public String toString()
     {
-        if (arr.length == 0)
+        return "Punkt start odcinka: " + this.start + "\nPunkt end odcinka: " + this.end;
+    }
+
+    public Segment maxSegment(Segment[] segments)
+    {
+        int max_len = 0;
+        Segment max_segment = segments[0];
+
+        for(Segment s : segments)
         {
-            return null;  // Zwrócenie null, jeśli tablica jest pusta
-        }
-
-        Segment max = arr[0];  // Zakłada, że pierwszy segment jest najdłuższy
-
-        for (int i = 1; i < arr.length; i++)
-        {  // Rozpoczynamy od drugiego segmentu
-            if (arr[i].length() > max.length())
-            {  // Porównujemy długość segmentu
-                max = arr[i];  // Jeśli segment jest dłuższy, przypisujemy go jako nowy "max"
+            if (s.length() > max_len)
+            {
+                max_segment = s;
             }
         }
-        return max;  // Zwracamy najdłuższy segment po zakończeniu pętli
+        return max_segment;
     }
-
 }
-
-
-
-
-
 
 
 

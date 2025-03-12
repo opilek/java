@@ -1,81 +1,65 @@
-public class Polygon {
+public class Polygon
+{
+    private Point[] points;
 
-    private Point[] vertices;//Wierzchołki
-
-   //Konstruktor
-    public Polygon(Point[] vertices) {
-        this.vertices = new Point[vertices.length];
-
-        for (int i = 0; i < vertices.length; i++)
-        {
-            this.vertices[i] = new Point(vertices[i]);
-        }
-
-
+    public Point[] getPoints()
+    {
+        return points;
     }
-    /* Konstruktor (płytka kopia)
-    public Polygon(Polygon other)
-    {
-        this.vertices=other.vertices;
-    }*/
 
-    //Konstruktor (głęboka kopia)
-    public Polygon(Polygon other)
+    public void setPoints(Point[] points)
     {
-        this.vertices=new Point[other.vertices.length];
+        this.points = points;
+    }
 
-        for(int i=0;i<vertices.length;i++)
+    public Polygon(Point[] points)
+    {
+        this.points = new Point[points.length];
+        for (int i = 0; i < points.length; i++)
         {
-            this.vertices[i]=new Point(other.vertices[i]);
+            this.points[i] = new Point(points[i].getX(), points[i].getY());
         }
     }
 
-
+    public Polygon(Polygon other)
+    {
+        Point[] otherPoints = other.getPoints();
+        this.points = new Point[otherPoints.length];
+        for (int i = 0; i < points.length; i++)
+        {
+            this.points[i] = new Point(otherPoints[i].getX(), otherPoints[i].getY());
+        }
+    }
 
     @Override
-
     public String toString()
     {
-        StringBuilder s=new StringBuilder();
-
-        for(Point p: vertices)
+        String result = "";
+        for (int i = 0; i < this.points.length; i++)
         {
-            s.append(p.getX()).append(",").append(p.getY()).append(" ");
+            result += "Punkt nr. " + (i + 1) + "\n" + this.points[i] + "\n";
         }
 
-        return s.toString().trim();
+        return result;
     }
 
-
-
-    public String toSvg()
+    public String toSvg(double offsetX, double offsetY)
     {
-          return "<polygon points=\""+ this +"\" style=\"fill:none;stroke:purple;stroke-width:3\" />";
-    }
+        String result = "<polygon points=\"";
 
-    public BoundingBox boundingBox()
-    {
-        if(vertices.length == 0)
+        for (int i = 0; i < points.length; i++)
         {
-            return null;
+            result += (points[i].getX() + offsetX) + "," + (points[i].getY() + offsetY);
+
+            if (i < points.length - 1)
+            {
+                result += " ";
+            }
         }
-        double minX = vertices[0].getX();
-        double maxX = vertices[0].getX();
-        double minY = vertices[0].getY();
-        double maxY = vertices[0].getY();
-        for(int i=1; i<vertices.length; i++)
-        {
-            if(vertices[i].getX() < minX) minX = vertices[i].getX();
-            if(vertices[i].getX() > maxX) maxX = vertices[i].getX();
-            if(vertices[i].getY() < minY) minY = vertices[i].getY();
-            if(vertices[i].getY() > maxY) maxY = vertices[i].getY();
-        }
-        return new BoundingBox(minX, minY, maxX-minX, maxY-minY);
+        result += "\" style=\"fill:none;stroke:black;stroke-width:1\" />";
+
+        return result;
     }
-
-
 
 
 }
-
-

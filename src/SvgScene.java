@@ -1,82 +1,118 @@
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
-
-
-
 
 public class SvgScene
 {
-
-    private Polygon[] polygons;  // Tablica przechowująca referencje do 3 obiektów Polygon
-    private int index;  // Indeks, który wskazuje, gdzie dodać nowy Polygon
-
+    private final Polygon[] polygons;
+    private int currentReplacementIndex;
 
     public SvgScene()
     {
-        this.polygons=new Polygon[3];
-        index=0;
+        this.polygons = new Polygon[3];
+        this.currentReplacementIndex = 0;
     }
 
-    // Funkcja dodająca Polygon do tablicy
-    public void addPolygon(Polygon poly)
+    public Polygon[] getPolygons()
     {
-        // Dodaj nowy Polygon w miejscu wskazanym przez index
-        polygons[index] = poly;
+        return this.polygons;
+    }
 
-        // Zwiększ indeks, a jeśli przekroczy rozmiar tablicy, zresetuj go do 0
-        index = (index + 1) % polygons.length;
+
+//    Najpierw przechodzimy się po tablicy i dodajemy nowy Point do pierwszego napotkanego miejsca w tablicy (opcjonalne)
+//    następnie jeśli żadniego nie znajedziemy to po prostu podmieniamy punkt znajdujący się na currentReplacementIndex,
+//    jeśli dojdziemy do końca tablicy, zerujemy currentReplacementIndex
+
+    public void addPolygon(Polygon p)
+    {
+        for (int i = 0; i < this.polygons.length; i++)
+        {
+            if (this.polygons[i] == null)
+            {
+                this.polygons[i] = p;
+                return;
+            }
+        }
+        polygons[this.currentReplacementIndex] = p;
+        this.currentReplacementIndex++;
+
+        if (this.currentReplacementIndex == this.polygons.length)
+        {
+            this.currentReplacementIndex = 0;
+        }
     }
 
     public String toSvg()
     {
-        StringBuilder sb = new StringBuilder();
-        for(Polygon p: polygons)
+        String result = "";
+        for (Polygon p : this.polygons)
         {
-            if (p != null) {
-                sb.append(p.toSvg()).append("\n");
-            }
-
-
+            result += p.toSvg(0,0);
+            result += "\n";
         }
-        return sb.toString();
+        return result;
     }
 
     public BoundingBox boundingBox()
     {
-        double minX = Double.POSITIVE_INFINITY;
-        double maxX = Double.NEGATIVE_INFINITY;
-        double minY = Double.POSITIVE_INFINITY;
-        double maxY = Double.NEGATIVE_INFINITY;
-        for (Polygon p : polygons){
-            if(p!=null)
+        double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE;
+        double maxX = -Double.MAX_VALUE, maxY = -Double.MAX_VALUE;
+
+        for (Polygon poly : this.polygons)
+        {
+            if (poly == null)
             {
-                BoundingBox polyBB = p.boundingBox();
-                minX = Math.min(minX, polyBB.x());
-                minY = Math.min(minY, polyBB.y());
-                maxX = Math.max(maxX, polyBB.x()+polyBB.width());
-                maxY = Math.max(maxY, polyBB.y()+polyBB.height());
+                continue;
+            }
+
+            for (Point p : poly.getPoints())
+            {
+                minX = Math.min(minX, p.getX());
+                minY = Math.min(minY, p.getY());
+                maxX = Math.max(maxX, p.getX());
+                maxY = Math.max(maxY, p.getY());
             }
         }
-        return new BoundingBox(minX, minY, maxX-minX, maxY-minY);
+
+        return new BoundingBox(minX, minY, maxX - minX, maxY - minY);
     }
 
 
-    public void save(String filePath) throws IOException
+    public void save(String filePath)
     {
-        FileWriter writer = new FileWriter(filePath);
-        BoundingBox bb = boundingBox();
-        writer.write("<svg width=\""+bb.width()+"\" height=\""+bb.height());
-        writer.write("\" viewBox=\""+bb.x()+" "+bb.y()+" "+bb.width()+" "+bb.height()+"\" xmlns=\"http://www.w3.org/2000/svg\">\n");
-        for(Polygon p : polygons)
+        BoundingBox box = this.boundingBox();
+
+        if (box == null)
         {
-            if(p!=null)
-            {
-                writer.write(p.toSvg()+"\n");
-            }
+            System.out.println("No polygons to save.");
+            return;
         }
-        writer.write("</svg>");
-        writer.close();
+
+        double offsetX = box.x();
+        double offsetY = box.y();
+        double width = box.width();
+        double height = box.height();
+
+        StringBuilder svgContent = new StringBuilder();
+        svgContent.append(String.format(
+                "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"%.2f\" height=\"%.2f\" viewBox=\"0 0 %.2f %.2f\">\n",
+                width, height, width, height
+        ));
+
+        for (Polygon poly : this.polygons)
+        {
+            if (poly == null) continue;
+            svgContent.append(poly.toSvg(offsetX, offsetY)).append("\n");
+        }
+
+        svgContent.append("</svg>");
+
+        try (FileWriter writer = new FileWriter(filePath))
+        {
+            writer.write(svgContent.toString());
+            System.out.println("SVG file saved successfully!");
+        } catch (IOException e) {
+            System.err.println("Error saving SVG file: " + e.getMessage());
+        }
     }
 
 }
