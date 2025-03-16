@@ -5,29 +5,29 @@ public class Point
 //    odpowiednie metody, czyli akcesory i mutatory
 
 
-    private int x;
-    private int y;
+    private double x;
+    private double y;
 
 //    Akcesory czyli setery
 
-    public void setX(int x)
+    public void setX(double x)
     {
         this.x = x;
     }
 
-    public void setY(int y)
+    public void setY(double y)
     {
         this.y = y;
     }
 
 //    Mutatory czyli getery
 
-    public int getX()
+    public double getX()
     {
         return x;
     }
 
-    public int getY()
+    public double getY()
     {
         return y;
     }
@@ -35,7 +35,7 @@ public class Point
 //    Następnie tworzymy 2-argumentowy konstruktor, tworzący
 //    nasz punk w miejscu określonym za pomocą argumentów
 
-    public Point(int x, int y)
+    public Point(double x, double y)
 
     {
         this.x = x;
@@ -69,13 +69,13 @@ public class Point
         return "<circle cx=\"" + this.x + "\" cy=\"" + this.y + "\" r=\"5\" fill=\"black\" />";
     }
 
-    public void translate(int dx, int dy)
+    public void translate(double dx, double dy)
     {
         this.x += dx;
         this.y += dy;
     }
 
-    public Point translated(int dx, int dy)
+    public Point translated(double dx, double dy)
     {
         Point result = new Point();
         result.x = this.x + dx;

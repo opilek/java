@@ -1,6 +1,23 @@
-public class Polygon
+import javax.sound.sampled.Line;
+
+public class Polygon extends Shape
 {
     private Point[] points;
+    //dodajemy pole typu Style
+    private Style style;
+
+    //Getter dla style
+    public Style getStyle()
+    {
+        return style;
+    }
+    //Seter dla style
+    public void setStyle(Style style)
+    {
+        this.style = style;
+    }
+
+
 
     public Point[] getPoints()
     {
@@ -12,17 +29,33 @@ public class Polygon
         this.points = points;
     }
 
+    // Konstruktor bez argumentu style - ustawia domyślny styl
     public Polygon(Point[] points)
     {
+        this(points, new Style("transparent", "black", 1));
+    }
+
+
+    //Modyfikacja konstruktora (dodanie Style)
+    public Polygon(Point[] points, Style style )
+    {
+        //Super służy doywoływania konstruktora
+        // klasy nadrzędnej w konstruktorze klasy pochodnej (dziedziczącej).
+        super(style);
         this.points = new Point[points.length];
+        this.style=style;
         for (int i = 0; i < points.length; i++)
         {
             this.points[i] = new Point(points[i].getX(), points[i].getY());
         }
     }
-
+    //Konstruktor wykonujący głęboką kopię obiektu
     public Polygon(Polygon other)
     {
+        //Przy głębokiej kopii tworzymy nowy obiekt dlatego mamy new Style
+        super(new Style(other.getStyle().fillColor, other.getStyle().strokeColor, other.getStyle().widthColor));
+
+
         Point[] otherPoints = other.getPoints();
         this.points = new Point[otherPoints.length];
         for (int i = 0; i < points.length; i++)
@@ -30,6 +63,8 @@ public class Polygon
             this.points[i] = new Point(otherPoints[i].getX(), otherPoints[i].getY());
         }
     }
+
+
 
     @Override
     public String toString()
@@ -56,10 +91,16 @@ public class Polygon
                 result += " ";
             }
         }
-        result += "\" style=\"fill:none;stroke:black;stroke-width:1\" />";
+        result += "\" style=\"fill: " + getStyle().fillColor + "; stroke: " + getStyle().strokeColor
+                + "; stroke-width: " + getStyle().widthColor + "\" />";
 
         return result;
     }
+
+
+
+
+
 
 
 }
