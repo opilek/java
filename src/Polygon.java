@@ -3,7 +3,7 @@ import javax.sound.sampled.Line;
 public class Polygon extends Shape
 {
     private Point[] points;
-    //dodajemy pole typu Style
+    //dodajemy pole typu Style (jednak dziedziczy po Shape która ma to pole więc można to usunąć)
     private Style style;
 
     //Getter dla style

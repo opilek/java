@@ -3,6 +3,7 @@ import java.io.IOException;
 
 public class SvgScene
 {
+    //Zamieniamy wszędzie gdzie jest Polygon na Shape[] shapes
     private final Shape[] shapes;
     private int currentReplacementIndex;
 
