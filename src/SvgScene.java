@@ -3,18 +3,18 @@ import java.io.IOException;
 
 public class SvgScene
 {
-    private final Polygon[] polygons;
+    private final Shape[] shapes;
     private int currentReplacementIndex;
 
     public SvgScene()
     {
-        this.polygons = new Polygon[3];
+        this.shapes = new Shape[3];
         this.currentReplacementIndex = 0;
     }
 
-    public Polygon[] getPolygons()
+    public Shape[] getShapes()
     {
-        return this.polygons;
+        return this.shapes;
     }
 
 
@@ -22,20 +22,20 @@ public class SvgScene
 //    następnie jeśli żadniego nie znajedziemy to po prostu podmieniamy punkt znajdujący się na currentReplacementIndex,
 //    jeśli dojdziemy do końca tablicy, zerujemy currentReplacementIndex
 
-    public void addPolygon(Polygon p)
+    public void addShape(Shape s)
     {
-        for (int i = 0; i < this.polygons.length; i++)
+        for (int i = 0; i < this.shapes.length; i++)
         {
-            if (this.polygons[i] == null)
+            if (this.shapes[i] == null)
             {
-                this.polygons[i] = p;
+                this.shapes[i] = s;
                 return;
             }
         }
-        polygons[this.currentReplacementIndex] = p;
+        shapes[this.currentReplacementIndex] = s;
         this.currentReplacementIndex++;
 
-        if (this.currentReplacementIndex == this.polygons.length)
+        if (this.currentReplacementIndex == this.shapes.length)
         {
             this.currentReplacementIndex = 0;
         }
@@ -43,52 +43,48 @@ public class SvgScene
 
     public String toSvg()
     {
-        String result = "";
-        for (Polygon p : this.polygons)
+        StringBuilder result = new StringBuilder();
+        for (Shape s : this.shapes)
         {
-            result += p.toSvg(0,0);
-            result += "\n";
+            if (s != null)
+            {
+                result.append(s.toSvg(0, 0)).append("\n");
+            }
         }
-        return result;
+        return result.toString();
     }
 
-    public BoundingBox boundingBox()
-    {
+    public BoundingBox boundingBox() {
         double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE;
         double maxX = -Double.MAX_VALUE, maxY = -Double.MAX_VALUE;
 
-        for (Polygon poly : this.polygons)
-        {
-            if (poly == null)
-            {
-                continue;
-            }
-
-            for (Point p : poly.getPoints())
-            {
-                minX = Math.min(minX, p.getX());
-                minY = Math.min(minY, p.getY());
-                maxX = Math.max(maxX, p.getX());
-                maxY = Math.max(maxY, p.getY());
+        for (Shape s : this.shapes) {
+            if (s instanceof Polygon poly) {
+                for (Point p : poly.getPoints()) {
+                    minX = Math.min(minX, p.getX());
+                    minY = Math.min(minY, p.getY());
+                    maxX = Math.max(maxX, p.getX());
+                    maxY = Math.max(maxY, p.getY());
+                }
+            } else if (s instanceof Ellipse ellipse) {
+                minX = Math.min(minX, ellipse.getCenter().getX() - ellipse.getrX());
+                minY = Math.min(minY, ellipse.getCenter().getY() - ellipse.getrY());
+                maxX = Math.max(maxX, ellipse.getCenter().getX() + ellipse.getrX());
+                maxY = Math.max(maxY, ellipse.getCenter().getY() + ellipse.getrY());
             }
         }
 
         return new BoundingBox(minX, minY, maxX - minX, maxY - minY);
     }
 
-
-    public void save(String filePath)
-    {
+    public void save(String filePath) {
         BoundingBox box = this.boundingBox();
 
-        if (box == null)
-        {
-            System.out.println("No polygons to save.");
+        if (box == null) {
+            System.out.println("No shapes to save.");
             return;
         }
 
-        double offsetX = box.x();
-        double offsetY = box.y();
         double width = box.width();
         double height = box.height();
 
@@ -98,21 +94,19 @@ public class SvgScene
                 width, height, width, height
         ));
 
-        for (Polygon poly : this.polygons)
-        {
-            if (poly == null) continue;
-            svgContent.append(poly.toSvg(offsetX, offsetY)).append("\n");
+        for (Shape s : this.shapes) {
+            if (s != null) {
+                svgContent.append(s.toSvg(0, 0)).append("\n");
+            }
         }
 
         svgContent.append("</svg>");
 
-        try (FileWriter writer = new FileWriter(filePath))
-        {
+        try (FileWriter writer = new FileWriter(filePath)) {
             writer.write(svgContent.toString());
             System.out.println("SVG file saved successfully!");
         } catch (IOException e) {
             System.err.println("Error saving SVG file: " + e.getMessage());
         }
     }
-
 }

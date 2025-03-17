@@ -16,7 +16,7 @@ public class Style
 
 
 
-    public String toSvg()
+    public String toSvg(double offsetX, double offsetY)
     {
         return "style=\"fill: "+fillColor+" stroke: "+strokeColor+" width: "+widthColor+"\"";
     }

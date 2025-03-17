@@ -55,7 +55,36 @@ public class Segment {
         return max_segment;
     }
 
-    public Segment perpendicular(double length) {
+    public Segment perpendicular()
+    {
+        // Obliczamy kierunek oryginalnego segmentu
+        double dx = this.end.getX() - this.start.getX();
+        double dy = this.end.getY() - this.start.getY();
+
+        // Obliczamy segment prostopadły
+        double perpendicularDx = -dy;
+        double perpendicularDy = dx;
+
+        // Normalizujemy prostopoadły segment (ma długość 1)
+        double perpendicularLength = Math.sqrt(perpendicularDx * perpendicularDx + perpendicularDy * perpendicularDy);
+        perpendicularDx /= perpendicularLength;
+        perpendicularDy /= perpendicularLength;
+
+
+        // Obliczamy środkowy punkt obecnego segmentu
+        double midX = (this.start.getX() + this.end.getX()) / 2;
+        double midY = (this.start.getY() + this.end.getY()) / 2;
+
+        // Tworzymy nowy segment
+        Point newStart = new Point(midX + perpendicularDx, midY + perpendicularDy);
+        Point newEnd = new Point(midX - perpendicularDx, midY - perpendicularDy);
+
+        // Zwracamy prostopadły segment
+        return new Segment(newStart, newEnd);
+    }
+    //Przeciążenie metody perpendicular
+    public Segment perpendicular(double length)
+    {
 
         // Oblicza kierunek oryginalnego segmentu
         double dx = this.end.getX() - this.start.getX();

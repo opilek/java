@@ -1,28 +1,36 @@
-public class Ellipse extends Shape
+class Ellipse extends Shape
 {
-    //Srodek elipsy
-    private Point mid;
-    //Promienie
-    private double rx;
-    private double ry;
+    private Point center;
+    private double rX;
+    private double rY;
 
-    //Ellipse dziedziczy po Shape a tam jest już Style więc nie musimy go definiować
-
-    public Ellipse(Point mid, double rx, double ry,Style style)
+    public Ellipse(Point center, double rX, double rY, Style style)
     {
         super(style);
-
-        this.mid=mid;
-        this.rx=rx;
-        this.ry=ry;
+        this.center = center;
+        this.rX = rX;
+        this.rY = rY;
     }
+
+    public double getrX()
+    {
+        return rX;
+    }
+
+    public double getrY()
+    {
+        return rY;
+    }
+
+    public Point getCenter()
+    {
+        return center;
+    }
+
     @Override
     public String toSvg(double offsetX, double offsetY)
     {
-        return "<ellipse> rx: "+rx+" ry: "+ry+"cx: "+mid.getX()+" cy: "+mid.getY()+"\""
-                + " "+ style.toSvg()+"/>";
+        return "<ellipse cx=\"" + this.center.getX() + "\" cy=\"" + this.center.getY()
+                + "\" rx=\"" + this.rX + "\" ry=\"" + this.rY + "\" " + this.style.toSvg(0, 0) + " />";
     }
-
-
-
 }
