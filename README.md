@@ -216,3 +216,14 @@ public class EvenNumberTest {
     }
 }
 ```
+
+## Dodawanie depedencji JUnit w pom.xml
+
+```java
+<dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>5.10.2</version> <!-- lub najnowsza wersja -->
+        <scope>test</scope>
+    </dependency>
+```
